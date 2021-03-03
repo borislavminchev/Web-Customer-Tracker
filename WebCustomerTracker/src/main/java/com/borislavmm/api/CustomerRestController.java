@@ -1,13 +1,11 @@
 package com.borislavmm.api;
 
 import com.borislavmm.entity.Customer;
+import com.borislavmm.exceptions.AlreadyExistingCustomerException;
 import com.borislavmm.exceptions.CustomerNotFoundException;
 import com.borislavmm.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,5 +34,55 @@ public class CustomerRestController {
 
         return customer;
     }
+
+    @PostMapping("/customers")
+    public Customer addSingleCustomer(@RequestBody Customer customer){
+
+
+        //throw new AlreadyExistingCustomerException("Customer is already existing");
+        List<Customer> all = customerService.getCustomers();
+        for (Customer c : all) {
+            if(c.getId() == customer.getId()){
+                throw new AlreadyExistingCustomerException("Customer is already existing");
+            }
+        }
+
+        customerService.saveCustomer(customer);
+        return customer;
+    }
+
+    @PutMapping("/customers")
+    public Customer updateSingleCustomer(@RequestBody Customer customer){
+
+        List<Customer> all = customerService.getCustomers();
+        boolean flag = false;
+        for (Customer c : all) {
+            if(c.getId() == customer.getId()){
+                flag = true;
+            }
+        }
+        if(flag){
+            customerService.saveCustomer(customer);
+        }else {
+            throw new CustomerNotFoundException("Customer not found to update: " + customer.getId());
+        }
+
+        return customer;
+    }
+
+    @DeleteMapping("/customers/{id}")
+    public String deleteCustomer(@PathVariable long id){
+        Customer temp = null;
+        try{
+            temp = customerService.getCustomerById(id);
+        }catch (NoSuchElementException e){
+            throw new CustomerNotFoundException("Customer id not found: " + id);
+        }
+
+        customerService.deleteCustomerById(id);
+
+        return "Deleted customer id: " + id;
+    }
+
 
 }
