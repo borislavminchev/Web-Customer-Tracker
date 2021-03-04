@@ -4,15 +4,15 @@ public class CustomerErrorResponse {
 
     private int status;
     private String message;
-    private long timeStamp;
+    private long timestamp;
 
     public CustomerErrorResponse() {
     }
 
-    public CustomerErrorResponse(int status, String message, long timeStamp) {
+    public CustomerErrorResponse(int status, String message, long timestamp) {
         this.status = status;
         this.message = message;
-        this.timeStamp = timeStamp;
+        this.timestamp = timestamp;
     }
 
     public int getStatus() {
@@ -31,11 +31,11 @@ public class CustomerErrorResponse {
         this.message = message;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
