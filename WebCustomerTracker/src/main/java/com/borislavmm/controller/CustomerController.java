@@ -44,13 +44,13 @@ public class CustomerController {
         return "redirect:list";
     }
 
-    @GetMapping("showForUpdate")
+    @GetMapping("/showForUpdate")
     public String showUpdateCustomerForm(@RequestParam("id") long id, Model model){
         model.addAttribute("customer", service.getCustomerById(id));
         return "customer-form";
     }
 
-    @GetMapping("showForDelete")
+    @GetMapping("/showForDelete")
     public String deleteCustomerFromForm(@RequestParam("id") long id, Model model){
         service.deleteCustomerById(id);
         return "redirect:list";
